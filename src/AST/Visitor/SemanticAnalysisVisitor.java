@@ -171,7 +171,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 
 		if ( n.fl != null ) {
 			if ( n.fl.size() > 5 ) {
-				report_error(n.e.getLineNo(), "Method \""+n.i.s+"\" may not have more than 5 arguments. "+n.fl.size()+" provided.");
+				report_error(n.e.line_number, "Method \""+n.i.s+"\" may not have more than 5 arguments. "+n.fl.size()+" provided.");
 			}
 
 			for (int i = 0; i < n.fl.size(); i++) {
@@ -193,7 +193,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 
 		Object r = ( n.e != null ) ? n.e.accept(this) : null;
 		if ( r != null && !r.equals(o) ) {
-			report_error(n.getLineNo(), "Mismatched function call return type for \""+n.i.toString()+"\".");
+			report_error(n.line_number, "Mismatched function call return type for \""+n.i.toString()+"\".");
 		}
 
 		st = st.exitScope();
@@ -245,7 +245,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 				!(o instanceof String) ||
 				!((String)o).equals("Boolean") )
 		{
-			report_error(n.getLineNo(), "Expecting boolean type for if condition.");
+			report_error(n.line_number, "Expecting boolean type for if condition.");
 		}
 
 		return null;
@@ -261,7 +261,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 				!(o1 instanceof String) ||
 				!((String)o1).equals("Boolean") )
 		{
-			report_error(n.getLineNo(), "Expecting boolean type for while loop condition.");
+			report_error(n.line_number, "Expecting boolean type for while loop condition.");
 		}
 
 		return null;
@@ -282,7 +282,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 
 		if ( o1 == null || o2 == null || !o1.equals(o2) )
 		{
-			report_error(n.getLineNo(), "Mismatched lhs & rhs in assignment statement.");
+			report_error(n.line_number, "Mismatched lhs & rhs in assignment statement.");
 		}
 
 		return o1;
@@ -299,7 +299,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String t = (o != null && o instanceof String) ? (String)o : null;
 		if ( t == null || t != "int[]" )
 		{
-			report_error(n.getLineNo(), "Undefined array type.");
+			report_error(n.line_number, "Undefined array type.");
 		}
 		else
 		{
@@ -310,12 +310,12 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 				!(o1 instanceof String) ||
 				!((String)o1).equals("int") )
 		{
-			report_error(n.getLineNo(), "Expecting int type for array index.");
+			report_error(n.line_number, "Expecting int type for array index.");
 		}
 
 		if ( t == null || o2 == null || !t.equals(o2) )
 		{
-			report_error(n.getLineNo(), "Mismatched lhs & rhs in array assignment statement.");
+			report_error(n.line_number, "Mismatched lhs & rhs in array assignment statement.");
 		}
 
 		return o;
@@ -330,7 +330,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String s2 = (o2 != null && o2 instanceof String) ? (String)o2 : "";
 
 		if ( s1 != s2 || s1 != "Boolean") {
-			report_error(n.getLineNo(), "Expecting boolean operand types in and operation.");
+			report_error(n.line_number, "Expecting boolean operand types in and operation.");
 			return null;
 		}
 
@@ -342,7 +342,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String s1 = checkIntType(( n.e1 != null ) ? n.e1.accept(this) : null);
 		String s2 = checkIntType(( n.e2 != null ) ? n.e2.accept(this) : null);
 		if ( s1 != s2 || s1 != "int") {
-			report_error(n.getLineNo(), "Expecting int operand types in compare operation.");
+			report_error(n.line_number, "Expecting int operand types in compare operation.");
 			return null;
 		}
 
@@ -354,7 +354,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String s1 = checkIntType(( n.e1 != null ) ? n.e1.accept(this) : null);
 		String s2 = checkIntType(( n.e2 != null ) ? n.e2.accept(this) : null);
 		if ( s1 != s2 || s1 != "int") {
-			report_error(n.getLineNo(), "Expecting int operand types in add operation.");
+			report_error(n.line_number, "Expecting int operand types in add operation.");
 			return null;
 		}
 
@@ -366,7 +366,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String s1 = checkIntType(( n.e1 != null ) ? n.e1.accept(this) : null);
 		String s2 = checkIntType(( n.e2 != null ) ? n.e2.accept(this) : null);
 		if ( s1 != s2 || s1 != "int") {
-			report_error(n.getLineNo(), "Expecting int operand types in subtract operation.");
+			report_error(n.line_number, "Expecting int operand types in subtract operation.");
 			return null;
 		}
 
@@ -378,7 +378,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String s1 = checkIntType(( n.e1 != null ) ? n.e1.accept(this) : null);
 		String s2 = checkIntType(( n.e2 != null ) ? n.e2.accept(this) : null);
 		if ( s1 != s2 || s1 != "int") {
-			report_error(n.getLineNo(), "Expecting int operand types in multiply operation.");
+			report_error(n.line_number, "Expecting int operand types in multiply operation.");
 			return null;
 		}
 
@@ -388,13 +388,13 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 	public Object visit(Divide n) {
 		if(n.e2 == null) {
 			System.out.println("Can't divide");
-			report_error(n.getLineNo(), "Cannot divide by zero");
+			report_error(n.line_number, "Cannot divide by zero");
 			return null;
 		}
 		String s1 = checkIntType(( n.e1 != null ) ? n.e1.accept(this) : null);
 		String s2 = checkIntType(( n.e2 != null ) ? n.e2.accept(this) : null);
 		if ( s1 != s2 || s1 != "int") {
-			report_error(n.getLineNo(), "Expecting int operand types in division operation.");
+			report_error(n.line_number, "Expecting int operand types in division operation.");
 			return null;
 		}
 		return s1;
@@ -406,7 +406,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		String t = (o1 != null && o1 instanceof String) ? (String)o1 : null;
 		if ( t == null )
 		{
-			report_error(n.getLineNo(), "Undefined array type.");
+			report_error(n.line_number, "Undefined array type.");
 		}
 		else
 		{
@@ -418,7 +418,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 				!(o2 instanceof String) ||
 				!((String)o2).equals("int") )
 		{
-			report_error(n.getLineNo(), "Expecting int type for array index.");
+			report_error(n.line_number, "Expecting int type for array index.");
 		}
 
 		return t;
@@ -440,7 +440,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		if ( c != null && c != "" ) {
 			Symbol s = st.lookupSymbol(c);
 			if ( s == null || !(s instanceof ClassSymbol) ) {
-				report_error(n.e.getLineNo(), "Class object \""+c+"\" is undefined.");
+				report_error(n.e.line_number, "Class object \""+c+"\" is undefined.");
 				return null;
 			}
 
@@ -449,11 +449,11 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 			if ( ms != null ) {
 				// call expression list
 				if ( ms.getParameters().size() != n.el.size() ) {
-					report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" expecting "+ms.getParameters().size()+" argument(s), but "+n.el.size()+" provided.");
+					report_error(n.e.line_number, "Function call \""+n.i.s+"\" expecting "+ms.getParameters().size()+" argument(s), but "+n.el.size()+" provided.");
 				}
 				else {
 					if ( n.el.size() > 5 ) {
-						report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" may not have more than 5 arguments. "+n.el.size()+" provided.");
+						report_error(n.e.line_number, "Function call \""+n.i.s+"\" may not have more than 5 arguments. "+n.el.size()+" provided.");
 					}
 
 					for (int i = 0; i < n.el.size(); i++) {
@@ -464,11 +464,11 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 						if ( param_sym != null && param_sym instanceof ClassSymbol ) {
 							String param_ext = param_sym.getType();
 							if ( !param.equals(argtype) && !param_ext.equals(argtype) ) {
-								report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
+								report_error(n.e.line_number, "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
 							}
 						}
 						else if ( !param.equals(argtype) ) {
-							report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
+							report_error(n.e.line_number, "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
 						}
 					}
 				}
@@ -476,7 +476,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 				return ms.getType();
 			}
 
-			report_error(n.getLineNo(), "Function call \""+n.i.s+"\" is undefined.");
+			report_error(n.line_number, "Function call \""+n.i.s+"\" is undefined.");
 			return null;
 		}
 
@@ -488,14 +488,14 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 
 			// call expression list
 			if ( ms.getParameters().size() != n.el.size() ) {
-				report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" expecting "+ms.getParameters().size()+" arguments, but only "+n.el.size()+" were provided.");
+				report_error(n.e.line_number, "Function call \""+n.i.s+"\" expecting "+ms.getParameters().size()+" arguments, but only "+n.el.size()+" were provided.");
 			}
 			else {
 				for (int i = 0; i < n.el.size(); i++) {
 					Object o = n.el.get(i).accept(this);
 					String argtype = ms.getParameters().get(i).getType();
 					if ( !o.equals(argtype) ) {
-						report_error(n.e.getLineNo(), "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
+						report_error(n.e.line_number, "Function call \""+n.i.s+"\" argument "+i+" expecting "+argtype+" type.");
 					}
 				}
 			}
@@ -503,7 +503,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 			return ms.getType();
 		}
 
-		report_error(n.getLineNo(), "Function call \""+n.i.s+"\" is undefined.");
+		report_error(n.line_number, "Function call \""+n.i.s+"\" is undefined.");
 		return null;
 	}
 
@@ -524,7 +524,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 	public Object visit(IdentifierExp n) {
 		Symbol s = getSymbol(n);
 		if ( s == null ) {
-			report_error(n.getLineNo(), "Symbol \""+n.s+"\" has not been declared.");
+			report_error(n.line_number, "Symbol \""+n.s+"\" has not been declared.");
 			return null;
 		}
 
@@ -550,7 +550,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 			return c.i.toString();
 		}
 
-		report_error(n.getLineNo(), "Unable to determine \"this\" reference.");
+		report_error(n.line_number, "Unable to determine \"this\" reference.");
 		return null;
 	}
 
@@ -559,7 +559,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		// new int[e]
 		Object o = ( n.e != null ) ? n.e.accept(this) : null;
 		if ( o == null || !(o instanceof String) || !((String)o).equals("int") ) {
-			report_error(n.getLineNo(), "New array expecting integer size.");
+			report_error(n.line_number, "New array expecting integer size.");
 		}
 		return "int[]";
 	}
@@ -568,7 +568,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 	public Object visit(NewObject n) {
 		Symbol s = getSymbol(n.i);
 		if ( s == null ) {
-			report_error(n.getLineNo(), "Object \""+n.i.s+"\" has not been declared.");
+			report_error(n.line_number, "Object \""+n.i.s+"\" has not been declared.");
 		}
 
 		return n.i.s;
@@ -585,7 +585,7 @@ public class SemanticAnalysisVisitor implements ObjectVisitor {
 		//System.out.println("GETSYMBOL: " + n.s);
 		if ( s == null ) {
 			getSymbol(n);
-			report_error(n.getLineNo(), "Symbol \""+n.s+"\" has not been declared.");
+			report_error(n.line_number, "Symbol \""+n.s+"\" has not been declared.");
 			return null;
 		}
 		return s.getType();
